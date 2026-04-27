@@ -9,12 +9,6 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: write
-  issues: read
-  pull-requests: read
-  actions: read
-
 jobs:
   sync:
     name: Generate README
@@ -26,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'  # 使用稳定版本
+          python-version: '3.10'
           cache: pip
           cache-dependency-path: "requirements.txt"
 
@@ -36,13 +30,18 @@ jobs:
 
       - name: Generate new md
         run: |
-          python main.py ${{ secrets.G_T }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}' || echo "No issue context, skipping"
-        continue-on-error: true
+          python main.py ${{ secrets.G_T }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
+          # 验证文件是否生成
+          if [ ! -f *.md ] && [ ! -f BACKUP/*.md ]; then
+            echo "ERROR: No .md files generated!"
+            exit 1
+          fi
 
       - name: Push README
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add BACKUP/*.md
+          # 添加主目录下的.md文件
+          git add *.md || echo "No .md files found in root directory"
           git commit -a -m 'update new blog' || echo "nothing to commit"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git || echo "nothing to push"
+          git push || echo "nothing to push"
