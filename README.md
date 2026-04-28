@@ -7,9 +7,10 @@
   <a href="https://github.com/onetothrees/DebugDiary/actions"><strong>⚙️ 运行状态</strong></a>
 </p>
 
+# 将 README_TEMPLATE 中的图片部分改为以下代码
 <p align="center">
-  <img src="https://img.shields.io/github/last-commit/onetothrees/DebugDiary?style=flat-square&color=blue&label=最近更新">
-  <img src="https://img.shields.io/github/issues/onetothrees/DebugDiary?style=flat-square&color=orange&label=博文数量">
+  <img src="https://img.shields.io/github/last-commit/onetothrees/DebugDiary?style=flat-square&label=最近更新&color=blue">
+  <img src="https://img.shields.io/github/issues/onetothrees/DebugDiary?style=flat-square&label=博文数量&color=orange">
 </p>
 
 ---
@@ -25,5 +26,5 @@
 ---
 
 <p align="right">
-  <i>最后同步于: 2026-04-28 02:26:50</i>
+  <i>最后同步于: 2026-04-28 02:31:13</i>
 </p>
