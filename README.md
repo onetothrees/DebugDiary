@@ -1,8 +1,9 @@
 
-# onetothrees 的碎碎念
+# onetothrees DebugDiary
+
 
 > 记录技术、生活与思考。由 GitHub Issues 驱动的个人博客。
-
+> A dedicated tech diary for developers to record debugging experiences and technical growth.   
 ## 最近更新
 * [关于wsl2部署的Ubuntu中安装Hermes下载很慢的解决办法！](https://github.com/onetothrees/DebugDiary/issues/1)
 
@@ -13,4 +14,4 @@
 
 ---
 
-*生成于: 2026-04-28 02:03:40*
+*生成于: 2026-04-28 02:05:51*
