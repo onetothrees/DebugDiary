@@ -2,122 +2,87 @@
 import argparse
 import os
 import re
-
 from github import Github
-from marko import Markdown
+from datetime import datetime
 
-# 修改后的简洁模板，去掉了原作者的个人信息
+# 终极美化版 README 模板
 README_TEMPLATE = """
-# {user_name} DebugDiary
+# 🚀 {user_name} 的 Debug 日志
 
+<p align="center">
+  <a href="https://{user_name}.github.io/{repo_name}/"><strong>🌐 访问在线博客</strong></a> | 
+  <a href="https://github.com/{user_name}/{repo_name}/issues"><strong>💬 订阅文章</strong></a> |
+  <a href="https://github.com/{user_name}/{repo_name}/actions"><strong>⚙️ 运行状态</strong></a>
+</p>
 
-> 记录技术、生活与思考。由 GitHub Issues 驱动的个人博客。
-> A dedicated tech diary for developers to record debugging experiences and technical growth.   
-## 最近更新
+<p align="center">
+  <img src="https://img.shields.io/github/last-commit/{user_name}/{repo_name}?style=flat-square&color=blue&label=最近更新">
+  <img src="https://img.shields.io/github/issues/{user_name}/{repo_name}?style=flat-square&color=orange&label=博文数量">
+</p>
+
+---
+
+### 📝 最近讨论
 {communication}
 
-## 博文列表
+### 📚 全部博文
 {posts}
 
 ---
 
-*生成于: {update_time}*
-"""
-
-# 这里的链接已替换为你自己的仓库
-MD_HEAD = """---
-layout: post
-title: {title}
-date: {date}
-tags: [{tags}]
----
-
-## [{title}](https://github.com/{repo_name}/issues/{number})
-
+<p align="right">
+  <i>最后同步于: {update_time}</i>
+</p>
 """
 
 BACKUP_DIR = "BACKUP"
 ANCHOR_NUMBER = 5
-TOP_ISSUES_LABELS = ["Top"]
-
 
 def get_me(user):
     return user.get_user().login
 
-
-def is_me(issue, me):
-    return issue.user.login == me
-
-
 def format_time(time):
     return str(time)[:10]
-
 
 def login(token):
     return Github(token)
 
-
-def get_repo(user, repo_name):
-    return user.get_repo(repo_name)
-
-
-def parse_markdown(issue):
-    content = issue.body
-    # 简单的处理，你可以根据需要增加更复杂的解析
-    return content
-
-
-def get_posts(repo, me):
-    issues = repo.get_issues(state="all", creator=me)
-    posts = []
-    for issue in issues:
-        if issue.pull_request:
-            continue
-        posts.append(issue)
-    return posts
-
-
-def get_post_content(issue):
-    return issue.body
-
-
 def save_post(issue):
     if not os.path.exists(BACKUP_DIR):
         os.mkdir(BACKUP_DIR)
-    title = issue.title
-    # 过滤文件名非法字符
-    title = re.sub(r'[\\/:*?"<>|]', "_", title)
-    date = format_time(issue.created_at)
+    title = re.sub(r'[\\/:*?"<>|]', "_", issue.title)
     with open(os.path.join(BACKUP_DIR, f"{issue.number}_{title}.md"), "w", encoding="utf-8") as f:
         f.write(issue.body)
 
-
-def main(token, repo_name, issue_number=None):
+def main(token, repo_full_name, issue_number=None):
     user = login(token)
     me = get_me(user)
-    repo = get_repo(user, repo_name)
-    posts = get_posts(repo, me)
+    repo = user.get_repo(repo_full_name)
+    user_name, repo_name = repo_full_name.split("/")
+    
+    issues = repo.get_issues(state="all", creator=me)
+    posts = [i for i in issues if not i.pull_request]
 
-    # 保存所有博文到 BACKUP 文件夹
+    # 备份文件
     for post in posts:
         save_post(post)
 
-    # 构建 README 内容
+    # 格式化博文列表
     posts_md = ""
     for post in posts:
-        posts_md += f"* [{post.title}](https://github.com/{repo_name}/issues/{post.number}) - {format_time(post.created_at)}\n"
+        posts_md += f"* [{post.title}](https://github.com/{repo_full_name}/issues/{post.number}) `({format_time(post.created_at)})` \n"
 
-    # 获取最近讨论（此处简化处理，展示最近的几个 issue）
+    # 格式化最近更新
     communication_md = ""
     for post in posts[:ANCHOR_NUMBER]:
-        communication_md += f"* [{post.title}](https://github.com/{repo_name}/issues/{post.number})\n"
+        communication_md += f"* [{post.title}](https://github.com/{repo_full_name}/issues/{post.number})\n"
 
-    from datetime import datetime
     update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # 填充模板
+    # 填充并写入 README
     new_readme = README_TEMPLATE.format(
-        user_name=me,
+        user_name=user_name,
+        repo_name=repo_name,
         communication=communication_md,
         posts=posts_md,
         update_time=update_time
@@ -126,13 +91,10 @@ def main(token, repo_name, issue_number=None):
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(new_readme)
 
-    print("README.md updated successfully!")
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("github_token", help="github_token")
-    parser.add_argument("repo_name", help="repo_name")
-    parser.add_argument("--issue_number", help="issue_number", default=None, required=False)
+    parser.add_argument("github_token")
+    parser.add_argument("repo_name")
+    parser.add_argument("--issue_number", default=None)
     options = parser.parse_args()
     main(options.github_token, options.repo_name, options.issue_number)
