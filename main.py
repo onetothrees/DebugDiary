@@ -8,10 +8,7 @@ from datetime import datetime
 # 终极美化版 README 模板
 README_TEMPLATE = """
 
-<p align="center">
-  # 🚀 {user_name} 的 Debug 日志
-</p>
-
+<h1 align="center">🚀 {user_name} DebugDiary</h1>
 
 <p align="center">
   <a href="https://{user_name}.github.io/{repo_name}/"><strong>🌐 访问在线博客</strong></a> | 
