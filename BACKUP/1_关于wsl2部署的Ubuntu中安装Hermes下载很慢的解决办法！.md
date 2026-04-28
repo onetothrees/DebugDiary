@@ -1,5 +1,3 @@
-# [关于wsl2部署的Ubuntu中安装Hermes下载很慢的解决办法！](https://github.com/onetothrees/DebugDiary/issues/1)
-
 ### 国内Windows平台安装Hermes必须用到wsl2部署的Ubuntu环境
 
 但是由于环境隔离的原因 享受不到神奇上网工具的加成 Hermes安装需要下载组件或者软件库 很麻烦 非常的慢
