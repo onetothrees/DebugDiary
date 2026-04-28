@@ -6,7 +6,7 @@
 
 这是最彻底的解决方案，让WSL与Windows共享同一网络环境（也就是让Ubuntu能用上你的神奇上网工具）：
 1.创建/编辑配置文件
-在Windows用户目录（C:\Users\用户名）（必须放在这个目录，wsl默认，启动会自动加载）下创建或编辑.wslconfig文件（将文件名和文件扩展名都选定，然后粘贴.wslconfig，就可以生成这个文件），添加以下内容
+在Windows用户目录（C:\Users\用户名）（必须放在这个目录，wsl默认，启动会自动加载）下创建或编辑.wslconfig文件（将文件名和文件扩展名都选定，然后粘贴.wslconfig，就可以生成这个文件），添加以下内容：
 
 [wsl2]
 networkingMode=mirrored
