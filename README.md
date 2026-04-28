@@ -1,9 +1,6 @@
 
 
-<p align="center">
-  # 🚀 onetothrees 的 Debug 日志
-</p>
-
+<h1 align="center">🚀 onetothrees DebugDiary</h1>
 
 <p align="center">
   <a href="https://onetothrees.github.io/DebugDiary/"><strong>🌐 访问在线博客</strong></a> | 
@@ -29,5 +26,5 @@
 ---
 
 <p align="right">
-  <i>最后同步于: 2026-04-28 02:39:25</i>
+  <i>最后同步于: 2026-04-28 02:41:04</i>
 </p>
