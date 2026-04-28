@@ -26,7 +26,7 @@ wsl
 ### **已实测过不行的方案**
 
 方案一：使用备用镜像源
-国内常用的 GitHub 镜像站还有 https://ghproxy.cn 和 https://mirror.ghproxy.com 
+国内常用的 GitHub 镜像站还有 https://ghproxy.cn 和 https://mirror.ghproxy.com 。
 
 方案二：手动下载安装脚本
 如果镜像源均不可用，建议手动下载脚本。
