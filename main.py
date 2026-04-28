@@ -8,10 +8,11 @@ from marko import Markdown
 
 # 修改后的简洁模板，去掉了原作者的个人信息
 README_TEMPLATE = """
-# {user_name} 的碎碎念
+# {user_name} DebugDiary
+
 
 > 记录技术、生活与思考。由 GitHub Issues 驱动的个人博客。
-
+> A dedicated tech diary for developers to record debugging experiences and technical growth.   
 ## 最近更新
 {communication}
 
