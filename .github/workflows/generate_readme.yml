@@ -12,26 +12,37 @@ on:
     paths:
       - main.py
 
+# 核心修复点：明确赋予 Action 写入仓库的权限
+permissions:
+  contents: write
+  issues: read
+
 jobs:
   sync:
     name: Generate README
     runs-on: ubuntu-latest
+    # 这里的判断确保只有仓库所有者或 push 事件才能触发
     if: github.repository_owner_id == github.event.issue.user.id || github.event_name == 'push'
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: "3.13"
           cache: pip
           cache-dependency-path: "requirements.txt"
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
 
       - name: Generate new md
+        # 注意：请确保你在 Settings -> Secrets 中设置了 G_T
         run: |
           python main.py ${{ secrets.G_T }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
 
@@ -39,6 +50,11 @@ jobs:
         run: |
           git config --local user.email "460837939@qq.com"
           git config --local user.name "onetothrees"
-          git add BACKUP/*.md
-          git commit -a -m 'update new blog' || echo "nothing to commit"
-          git push || echo "nothing to push"
+          git add BACKUP/*.md README.md || echo "No files to add"
+          # 只有在有变动的情况下才提交
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m 'update new blog'
+            git push
+          fi
