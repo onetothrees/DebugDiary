@@ -1,21 +1,29 @@
-base_url = "https://yihong0618.github.io/gitblog/"
-generate_feeds = true
-feed_filenames = ["rss.xml"]
+# 博客的基础 URL，必须与部署地址一致
+base_url = "https://onetothrees.github.io/DebugDiary"
+title = "DebugDiary"
+description = "onetothrees 的技术与生活记录"
+default_language = "zh"
 theme = "even"
-taxonomies = [
-    {name = "categories", feed = true},
-    {name = "tags", feed = true},
-]
+
 [extra]
-even_title = "yihong0618's Blog"
-even_menu = [
-    {url = "$BASE_URL", name = "Home"},
-    {url = "$BASE_URL/tags/top/", name = "Top"},
-    {url = "$BASE_URL/issue-282/", name = "About"},
-    {url = "$BASE_URL/issue-311/", name = "Things I like"},
-    {url = "$BASE_URL/issue-329/", name = "Things I don’t like "},
-    {url = "$BASE_URL/issue-217/", name = "Friends"},
-]
-[markdown]
-highlight_code = true
-render_emoji = true
+# 这里的配置会直接显示在网页上
+even_title = "DebugDiary"
+author = "onetothrees"
+
+# 导航菜单设置
+[[extra.menu]]
+    name = "首页"
+    url = "/"
+[[extra.menu]]
+    name = "归档"
+    url = "/archives"
+[[extra.menu]]
+    name = "标签"
+    url = "/tags"
+[[extra.menu]]
+    name = "关于"
+    url = "https://github.com/onetothrees"
+
+# 社交链接（可选）
+[extra.social]
+    github = "https://github.com/onetothrees"
